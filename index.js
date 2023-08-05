@@ -19,6 +19,22 @@ app.get("/tasks", async (req, res) => {
     }
 });
 
+app.get("/tasks/:id", async (req, res) => {
+    try {
+        const taskId = req.params.id;
+
+        const task = await TaskModel.findById(taskId);
+
+        if (!task) {
+            res.status(404).send("Esssa tarefa não foi encontrada.");
+        }
+
+        res.status(200).send(task);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+});
+
 app.post("/tasks", async (req, res) => {
     try {
         const newTask = new TaskModel(req.body);
